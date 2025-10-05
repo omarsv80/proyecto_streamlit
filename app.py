@@ -1,17 +1,20 @@
-
 import streamlit as st
 import pandas as pd
 
-# Configuración de página (sin 'title' directo, usando 'page_title')
-st.set_page_config(page_title='Explorador de Datos', layout='wide')
+# URL pública del CSV en GitHub
+RAW_URL = "https://raw.githubusercontent.com/omarsv80/proyecto_streamlit/main/SampleSuperstore.csv"
 
-st.title('📊 Bloque 1 · Carga y vista previa')
+st.set_page_config(page_title="Dashboard de Ventas", layout="wide")
 
-file = st.file_uploader('Elige un archivo CSV o Excel', type=['csv','xlsx'])
-if file:
-    if file.name.endswith('.csv'):
-        df = pd.read_csv(file)
-    else:
-        df = pd.read_excel(file)
-    st.success(f'Archivo cargado: {file.name} ({len(df)} filas, {len(df.columns)} columnas)')
-    st.dataframe(df.head(50))
+st.title("📊 Dashboard Interactivo de Análisis de Ventas")
+
+# Cargar automáticamente desde GitHub
+try:
+    df = pd.read_csv(RAW_URL)
+    st.success("Datos cargados automáticamente desde GitHub ✅")
+except Exception as e:
+    st.error("Error al cargar el CSV automáticamente.")
+    st.text(str(e))
+
+# Mostrar los primeros datos
+st.dataframe(df.head())
